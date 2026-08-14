@@ -7,7 +7,7 @@ router =APIRouter()
 
 @router.post("/login",response_model=TokenResponse)
 def login(user_data:LoginRequest):
-    user = auth_service.authenticate_user(
+    user = AuthService.authenticate_user(
         user_data.username,
         user_data.password
         )

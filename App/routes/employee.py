@@ -1,6 +1,6 @@
 from fastapi import APIRouter ,status,HTTPException,Query,Depends
 from App.services.employee_service import EmployeeService
-from App.utils.security import get_current_user ,require_admin
+from App.dependencies.auth import get_current_user ,require_admin
 from App.models.employee import (
     EmployeeResponse,
     CreateEmployeeUpdate,
