@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "deptName": "Information Technology",
+        "deptLocation": "Noida"
+    },
+    {
+        "id": 3,
+        "deptName": "Information",
+        "deptLocation": "Noida sector 15"
+    }
+]
