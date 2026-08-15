@@ -16,7 +16,7 @@ def login(user_data:LoginRequest):
             status_code=401,
             detail="Invalid username or password"
         )
-    token= create_access_token({"sub":user["username"],"role":user["role"]})
+    token= create_access_token({"sub":user["username"],"employee_id": user["id"],"role":user["role"]})
     return {
         "access_token": token,
         "token_type": "bearer"
