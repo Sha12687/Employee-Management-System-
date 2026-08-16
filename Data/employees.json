@@ -1,16 +1,9 @@
 [
     {
-        "id": 6,
+        "id": 7,
         "name": "Rahul",
         "age": 30,
         "city": "Delhi",
         "country": "Asia"
-    },
-    {
-        "id": 7,
-        "name": "Ankit",
-        "age": 16,
-        "city": "Basti",
-        "country": "India"
     }
 ]

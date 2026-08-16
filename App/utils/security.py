@@ -20,21 +20,17 @@ def verify_password(password:str,store_pass:str)->bool:
 def create_access_token(data: dict) -> str:
     # Because we don't want to modify the original dictionary.
     payload = data.copy()
-    print(f"PAYLOAD -: {payload}" )
     expire = datetime.now(timezone.utc) + timedelta(
         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
     )
-    print(f"EXPIRE TIME {expire}")
     # Now the payload becomes:
     # {"sub": "admin","role": "admin","exp": datetime(...)}
     payload["exp"] = expire
-
     token = jwt.encode(
         payload,
         settings.SECRET_KEY,
         algorithm=settings.ALGORITHM
     )
-    print(f"TOKEN RUNING -:{token}")
     return token
 
 

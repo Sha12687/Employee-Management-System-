@@ -14,3 +14,8 @@ class Attendance(BaseModel):
 class AttendanceResponse(BaseModel):
     message: str
     attendance: Attendance
+
+class UpdateAttendance(BaseModel):
+    check_in: str | None = None
+    check_out: str | None = None
+    status: str | None = None

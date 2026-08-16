@@ -1,6 +1,6 @@
 from fastapi import APIRouter,status,HTTPException,Query
 from App.models.department import DepartmentResponse,CreateDepartment,CreateDepartmentUpdate
-from App.services.department_service import DepartmentService
+from App.services.department_service import Department_repository
 router = APIRouter(
     prefix="/departments",
     tags=["Departments"]
@@ -44,7 +44,7 @@ def update_Department(id :int , dept:CreateDepartmentUpdate):
             detail=f"Department {id} not found"
         )
     return DepartmentResponse(**dept)
-@router.delete(\
+@router.delete(
     "/{id}",
     response_model=DepartmentResponse,
     description="Delete Department"  ,
