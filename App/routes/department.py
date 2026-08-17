@@ -1,6 +1,6 @@
 from fastapi import APIRouter,status,HTTPException,Query
 from App.models.department import DepartmentResponse,CreateDepartment,CreateDepartmentUpdate
-from App.services.department_service import Department_repository
+from App.services.department_service import Department_repository,DepartmentService
 router = APIRouter(
     prefix="/departments",
     tags=["Departments"]
@@ -32,8 +32,8 @@ def create_department(dept:CreateDepartment):
 
 @router.put(
     "/{id}",
-    response_model=CreateDepartmentUpdate,
-    status_code=status.HTTP_202_ACCEPTED,
+    response_model=DepartmentResponse,
+    status_code=status.HTTP_200_OK,
     description="Department Update"
 )
 def update_Department(id :int , dept:CreateDepartmentUpdate):

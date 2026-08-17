@@ -43,7 +43,8 @@ def delete_employee(id:int,
 @router.post(
     "",
     response_model=EmployeeResponse,
-    summary="Create employee"
+    summary="Create employee",
+    status_code=status.HTTP_201_CREATED
     )
 def create_employee(employee: CreateEmployee):
     create_emp= EmployeeService.add_employee(employee)

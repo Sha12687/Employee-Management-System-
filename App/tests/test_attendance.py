@@ -1,11 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from App.main import app
-
 client = TestClient(app)
-
-
-
 @pytest.fixture
 def token():
     login_response = client.post(
@@ -51,11 +47,7 @@ def test_employee_check_in(token):
     )
 
     data = response.json()
-
-    print("TEMC")
-    print(data)
-
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert data["employee_id"] == 1
     assert data["check_out"] is None
     assert data["status"] == "Working"
@@ -70,7 +62,7 @@ def test_duplicate_check_in(token):
         }
     )
 
-    assert second_response.status_code == 400
+    assert second_response.status_code == 409
 
 def test_employe_check_out(token):
     response=client.post("/attendance/check-out",
@@ -93,25 +85,25 @@ def  test_duplicate_check_out(token):
     assert response.json()["detail"]==("Employee has already checked out today")
 
 def test_Get_my_attendance(token):
-    response = client.get("/attendance/check-me",
+    response = client.get("/attendance/me",
                            headers={
                             "Authorization": f"Bearer {token}"
                            })
-    response.status_code=200
+    assert response.status_code==200
     data= response.json()
     assert isinstance(data,list)
 
-def Admin_get_all_attendance():
-    response = client.get("/attendance/check-me",
+def test_admin_get_all_attendance():
+    response = client.get("/attendance/me",
                            headers={
                             "Authorization": f"Bearer {token}"
                            })
-    response.status_code==200
+    assert response.status_code==200
     data= response.json()
     assert isinstance(data,list)
     
 def test_employee_denied_admin_access(emp_token):
-    response = client.get("/attendance/get-all-attendance",
+    response = client.get("/attendance/",
                            headers={
                             "Authorization": f"Bearer {emp_token}"
                            })
@@ -122,7 +114,7 @@ def test_employee_denied_admin_access(emp_token):
 def test_filter_by_employee(token):
 
     response = client.get(
-        "/attendance/get-all-attendance?employee_id=1",
+        "/attendance/?employee_id=1",
         headers={
             "Authorization": f"Bearer {token}"
         }
@@ -134,7 +126,7 @@ def test_filter_by_employee(token):
     
 def test_filter_by_employee_date(token):
     response = client.get(
-        "/attendance/get-all-attendance?date=2026-08-17",
+        "/attendance/?date=2026-08-17",
         headers={
             "Authorization": f"Bearer {token}"
         }
@@ -145,7 +137,7 @@ def test_filter_by_employee_date(token):
 
 def test_filter_by_employee_date_and_empId(token):
     response = client.get(
-        "/attendance/get-all-attendance?date=2026-08-17&employee_id=1",
+        "/attendance/?date=2026-08-17&employee_id=1",
         headers={
             "Authorization": f"Bearer {token}"
         }
@@ -156,12 +148,12 @@ def test_filter_by_employee_date_and_empId(token):
 
 def test_no_matching_records(emp_token):
     response = client.get(
-        "/attendance/check-me",
+        "/attendance/me",
         headers={
             "Authorization": f"Bearer {emp_token}"
         }
     )
-    response.status_code==404
+    assert response.status_code==404
     response.json()["detail"]== ("Attendance record not found for this employee")
     
 

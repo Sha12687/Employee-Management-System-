@@ -16,7 +16,7 @@ class AttendanceService:
         open_attendance=AttendanceRepository.get_open_attendance(employee_id)
         if open_attendance is not None:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
+                status_code=status.HTTP_409_CONFLICT,
                 detail="Employee is already checked in"
             )
         # 4. Check if attendance already exists for today
@@ -109,16 +109,13 @@ class AttendanceService:
         return my_attendance
         
     def get_all_attendance(payload:dict,employee_id: int | None = None):
-        
-        if employee_id is not None:
-            return AttendanceRepository.get_by_employee_id(
-            employee_id)
         all_attendance=AttendanceRepository.get_all()
-        if not all_attendance :
-            raise HTTPException(
-            status_code=status.HTTP_200_OK,
-            detail="Attendance record are empty"
-            )
+        if employee_id is not None:
+            return [
+            attendance
+            for attendance in all_attendance
+            if attendance["employee_id"] == employee_id
+                ]
         return all_attendance
     
     def get_all_attendance_By_date(payload:dict,date:date |None =None):
@@ -134,7 +131,7 @@ class AttendanceService:
     def get_all_attendance_By_date_and_empid(payload:dict,
                                              date:date |None =None,
                                              employee_id:int |None =None):
-        print("SERVICE")
+        
         all_attendance_by_date=AttendanceRepository.get_all_employee_attendance_by_date_empid(date,employee_id)
         if not all_attendance_by_date:
                 raise HTTPException(

@@ -95,7 +95,7 @@ class AttendanceRepository:
     @staticmethod
     def get_all_employee_attendance_by_date_empid(date,empid):
         all_attendance=AttendanceRepository.get_all()
-        print("CALIING METHOD")
+        
         return [
             attendance for attendance in all_attendance
             if attendance["date"] == date.isoformat() and

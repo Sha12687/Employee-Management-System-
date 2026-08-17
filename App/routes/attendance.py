@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends,status
 from App.services.attendance_service import AttendanceService
 from App.dependencies.auth import get_current_user, require_admin
 from datetime import date
@@ -9,7 +9,7 @@ router = APIRouter(
 )
 
 
-@router.post("/check-in")
+@router.post("/check-in",status_code=status.HTTP_201_CREATED)
 def check_in(
     payload: dict = Depends(get_current_user)
 ):
@@ -66,7 +66,7 @@ def get_all_attendance(
     )
 
 
-@router.delete("/{attendance_id}")
+@router.delete("/{attendance_id}",status_code=status.HTTP_200_OK)
 def delete_attendance(
     attendance_id: int,
     payload: dict = Depends(require_admin)
